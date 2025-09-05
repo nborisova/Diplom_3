@@ -2,6 +2,7 @@ from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException, ElementClickInterceptedException
+import allure
 
 
 class BasePage:
@@ -9,22 +10,19 @@ class BasePage:
         self.driver = driver
         self.wait = WebDriverWait(driver, timeout)
 
+    @allure.step('Открываем страницу')
     def open_page(self, url):
         self.driver.get(url)
 
-    #скролл до элемента
-    def scroll_down(self, locator):
-        element = self.driver.find_element(*locator)
-        self.driver.execute_script('arguments[0].scrollIntoView();', element)   
-
-    #дождаться загрузки блока 
+    @allure.step('Дожидаемся загрузки элемента')
     def wait_for_load_element(self, locator):
-        WebDriverWait(self.driver, 5).until(expected_conditions.visibility_of_element_located(locator))
+        WebDriverWait(self.driver, 10).until(expected_conditions.visibility_of_element_located(locator))
 
-    #дождаться кликабельности элемента 
+    @allure.step('Дожидаемся кликабельности элемента')
     def wait_for_clickable(self, locator):
-        WebDriverWait(self.driver, 10).until(expected_conditions.element_to_be_clickable(locator))     
+        WebDriverWait(self.driver, 5).until(expected_conditions.element_to_be_clickable(locator))     
 
+    @allure.step('Кликаем по элементу')
     def click_element(self, locator, timeout=10):
         element = WebDriverWait(self.driver, timeout).until(
             expected_conditions.element_to_be_clickable(locator)
@@ -43,6 +41,8 @@ class BasePage:
         except ElementClickInterceptedException:
             self.driver.execute_script("arguments[0].click();", element)
 
-    #заполнение полей данными
+    @allure.step('Заполняем поля данными')
     def enter_data(self, locator, data):
-        self.driver.find_element(*locator).send_keys(data)
+        element = self.driver.find_element(*locator)
+        element.clear()
+        element.send_keys(data)
