@@ -6,7 +6,7 @@ LOGIN_PAGE_URL = f'{BASE_URL}/login'
 RECOVER_PASSWORD_PAGE_URL = f'{BASE_URL}/forgot-password'
 RESET_PASSWORD_PAGE_URL = f'{BASE_URL}/reset-password'
 ORDER_FEED_PAGE_URL = f'{BASE_URL}/feed'
-GET_AND_CREATE_ORDERS_URL = 'https://stellarburgers.nomoreparties.site/api/orders'
+GET_AND_CREATE_ORDERS_URL = f'{BASE_URL}/api/orders'
 
 recover_password_link = (By.XPATH, './/a[text()="Восстановить пароль"]')
 email_input = (By.XPATH, './/label[text()="Email"]/following-sibling::input')
